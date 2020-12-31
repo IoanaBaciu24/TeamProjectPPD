@@ -1,0 +1,7 @@
+C:\Users\papuci\Documents\PPD\TeamProj\TeamProjectPPD\TeamProject\TeamProject\bin\Debug\TeamProject.exe.config
+C:\Users\papuci\Documents\PPD\TeamProj\TeamProjectPPD\TeamProject\TeamProject\bin\Debug\TeamProject.exe
+C:\Users\papuci\Documents\PPD\TeamProj\TeamProjectPPD\TeamProject\TeamProject\bin\Debug\TeamProject.pdb
+C:\Users\papuci\Documents\PPD\TeamProj\TeamProjectPPD\TeamProject\TeamProject\obj\Debug\TeamProject.csprojAssemblyReference.cache
+C:\Users\papuci\Documents\PPD\TeamProj\TeamProjectPPD\TeamProject\TeamProject\obj\Debug\TeamProject.csproj.CoreCompileInputs.cache
+C:\Users\papuci\Documents\PPD\TeamProj\TeamProjectPPD\TeamProject\TeamProject\obj\Debug\TeamProject.exe
+C:\Users\papuci\Documents\PPD\TeamProj\TeamProjectPPD\TeamProject\TeamProject\obj\Debug\TeamProject.pdb
