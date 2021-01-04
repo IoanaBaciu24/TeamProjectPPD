@@ -14,15 +14,19 @@ namespace TeamProject
         int y2;
 
         public double slope;
-        public double yIntersect; 
+        public double yIntersect;
+
+        public double theta;
+        public double rho;
 
         public void ComputeSlopeAndIntersect()
         {
             var d = x1 - x2;
             if ((x1 - x2) != 0)
             {
-                slope = (y1 - y2) / (x1 - x2);
-                yIntersect = (-1) * slope * x1 + y1;
+                //slope = (double)(y1 - y2) / (double)(x1 - x2);
+                slope = (double)Decimal.Divide((y1 - y2), (x1 - x2));
+                yIntersect = y1 - slope * x1;
             }
             else
             {
@@ -42,15 +46,28 @@ namespace TeamProject
         }
 
 
-        public static bool CheckIfPointShouldBeColoured(List<Line> lines, int x, int y)
+        public static bool CheckIfPointShouldBeColoured(List<Line> lines, int x, int y, bool polar)
         {
             foreach(var line in lines)
             {
-                if (line.CheckIfPointBelongsToLine(x, y))
-                    return true;
+                if (!polar)
+                {
+                    if (line.CheckIfPointBelongsToLine(x, y))
+                        return true;
+                }
+                else
+                {
+                    if (line.ChekIfPointBelongsToLinePolarCoordinates(x, y))
+                        return true;
+                }
             }
 
             return false;
+        }
+
+        public  bool ChekIfPointBelongsToLinePolarCoordinates(int x, int y)
+        {
+            return (int)(x * Math.Cos(theta) + y * Math.Sin(theta)) == (int)rho;
         }
 
         public Line(int x1, int y1, int x2, int y2)
