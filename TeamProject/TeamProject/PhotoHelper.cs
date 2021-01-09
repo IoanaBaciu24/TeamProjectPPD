@@ -113,11 +113,6 @@ namespace TeamProject
             int idx = 0;
             for (int i = 0; i < 180; i++)
             { theta[idx] = (Math.PI) / 180 * i; idx++; }
-            //for (int i = 91; i < 270; i++)
-            //{ theta[idx] = (Math.PI) / 180 * i; idx++; }
-            //for (int i = 271; i < 360; i++)
-            //{ theta[idx] = (Math.PI) / 180 * i; idx++; }
-            //{ theta[idx] = i;idx++; }
 
             idx = 0;
             for(int i=-distMax;i<distMax;i++)
@@ -213,46 +208,7 @@ namespace TeamProject
         }
 
 
-        public static void HSIncrementation2(Object threadObj)
-        {
-            List<Object> param = (List<Object>)threadObj;
-            byte[] buffer = (byte[])param[0];
-            int width = (int)param[1];
-            int height = (int)param[2];
-            int row = (int)param[3];
-            Console.WriteLine("got here");
-                for (int i = 0; i < width; i++)
-                {
-                    if (CheckIfPxIsInEdge(width, height, buffer, row, i))
-                    {
-                        for (var iTheta = 0; iTheta < theta.Length; iTheta++)
-                        {
-                            var r = row * Math.Cos(theta[iTheta]) + i * Math.Sin(theta[iTheta]);
 
-
-                            var rh = FindDamnIndexInDamnArray(rho, (int)r);
-
-                            //Interlocked.Increment(ref H[rh, iTheta]);
-                            //Mutex mutex = new Mutex();
-                            //mutex.WaitOne();
-                            //HS[rh, iTheta]++;
-                            //mutex.ReleaseMutex();
-                            lock (H)
-                            {
-                                H[rh][iTheta]++;
-
-                            }
-
-
-
-                        }
-                    }
-                }
-
-
-            
-
-        }
 
 
         public static void HoughTransformThreads(int width, int height, byte[] buffer,  int numberOfThreads)
@@ -304,11 +260,6 @@ namespace TeamProject
                     thrParameter.Add(height);
                     thrParameter.Add(index);
                     thrParameter.Add(numberOfThreads);
-
-                    //thrParameter.Add(indices[index]);
-                    //thrParameter.Add(H);
-
-                    //Console.WriteLine("started {0} th thread", i);
 
                     HSIncrementation(thrParameter);
 
