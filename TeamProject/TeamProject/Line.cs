@@ -50,15 +50,15 @@ namespace TeamProject
         {
             foreach(var line in lines)
             {
-                if (!polar)
+                if (!polar && line!=null)
                 {
                     if (line.CheckIfPointBelongsToLine(x, y))
                         return true;
                 }
                 else
                 {
-                    if (line.ChekIfPointBelongsToLinePolarCoordinates(x, y))
-                        return true;
+                    //if (line.ChekIfPointBelongsToLinePolarCoordinates(x, y))
+                    //    return true;
                 }
             }
 
