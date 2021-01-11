@@ -1,0 +1,8 @@
+C:\Users\papuci\Documents\PPD\TeamProj\TeamProjectPPD\TeamProjectMPI\TeamProjectMPI\obj\Debug\TeamProjectMPI.csproj.CoreCompileInputs.cache
+C:\Users\papuci\Documents\PPD\TeamProj\TeamProjectPPD\TeamProjectMPI\TeamProjectMPI\bin\Debug\TeamProjectMPI.exe.config
+C:\Users\papuci\Documents\PPD\TeamProj\TeamProjectPPD\TeamProjectMPI\TeamProjectMPI\bin\Debug\TeamProjectMPI.exe
+C:\Users\papuci\Documents\PPD\TeamProj\TeamProjectPPD\TeamProjectMPI\TeamProjectMPI\bin\Debug\TeamProjectMPI.pdb
+C:\Users\papuci\Documents\PPD\TeamProj\TeamProjectPPD\TeamProjectMPI\TeamProjectMPI\bin\Debug\MPI.dll
+C:\Users\papuci\Documents\PPD\TeamProj\TeamProjectPPD\TeamProjectMPI\TeamProjectMPI\obj\Debug\TeamProjectMPI.csproj.CopyComplete
+C:\Users\papuci\Documents\PPD\TeamProj\TeamProjectPPD\TeamProjectMPI\TeamProjectMPI\obj\Debug\TeamProjectMPI.exe
+C:\Users\papuci\Documents\PPD\TeamProj\TeamProjectPPD\TeamProjectMPI\TeamProjectMPI\obj\Debug\TeamProjectMPI.pdb

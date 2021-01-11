@@ -77,7 +77,7 @@ namespace TeamProject
         {
             PhotoHelper.ImRead(path, out var width, out var height, out var buffer);
             PhotoHelper.ConvertImageToGreyScaleAndTresholding(width, height, bwTreshold, buffer);
-            PhotoHelper.ImWrite("C:\\Users\\papuci\\Documents\\PPD\\TeamProj\\TeamProjectPPD\\grey_grid.png", width, height, buffer);
+            //PhotoHelper.ImWrite("C:\\Users\\papuci\\Documents\\PPD\\TeamProj\\TeamProjectPPD\\grey_grid.png", width, height, buffer);
 
             Console.WriteLine("CONVERTED TO BINARY IMAGE, WIDTH: {0}, HEIGHT: {1}", width, height);
             PhotoHelper.HoughTransformThreads(width, height, buffer, NR_THREADS);

@@ -6,11 +6,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
+using System.Threading;
 
 namespace TeamProjectMPI
 {
     class PhotoHelper
     {
+        public static int[][] H;
+
         public static void ImRead(string path, out int width, out int height, out byte[] buffer)
         {
             var image = (Bitmap)Image.FromFile(path);
@@ -106,6 +109,94 @@ namespace TeamProjectMPI
                 }
             }
         }
+
+        public static bool CheckIfPxIsInEdge(int width, int height, byte[] buffer, int i, int j)
+        {
+            var pixel = GetPx(width, height, buffer, i, j);
+            return pixel.R == 0 && pixel.G == 0 && pixel.B == 0;
+        }
+
+
+        private static int FindDamnIndexInDamnArray(int[] arr, int elem)
+        {
+            for (int i = 0; i < arr.Length; i++)
+                if (arr[i] == elem)
+                    return i;
+            return -1;
+        }
+
+
+
+        public static void HSIncrementation(int width, int height, byte[] buffer, int index, int nrProcesses, double[]theta, int[]rho)
+        {
+           
+
+            //Quadruple quadruple = (Quadruple)param[3];
+            //int[,] HS = (int[,])param[4];
+            Console.WriteLine("got here");
+            var count = 0;
+
+            int startRow, endRow;
+
+            if (index == nrProcesses - 1)
+            {
+                startRow = index * (height / nrProcesses);
+                endRow = height;
+       
+
+            }
+            else
+            {
+                startRow = index * (height / nrProcesses);
+                endRow = (index + 1) * (height / nrProcesses) - 1;
+              
+            }
+
+            for (int i = startRow; i < endRow; i++)
+            {
+                {
+                    for (int j = 0; j < width; j++)
+                    {
+                        count++;
+
+                        if (CheckIfPxIsInEdge(width, height, buffer, i, j))
+                        {
+                            for (var iTheta = 0; iTheta < theta.Length; iTheta++)
+                            {
+                                var r = i * Math.Cos(theta[iTheta]) + j * Math.Sin(theta[iTheta]);
+
+
+                                var rh = FindDamnIndexInDamnArray(rho, (int)r);
+
+                                if(H!=null)
+                                {
+                                    Interlocked.Increment(ref H[rh][iTheta]);
+
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
+        public static void ConvertImageToGreyScaleAndTresholding(int width, int height, int treshold, byte[] buffer)
+        {
+            Parallel.For(0, height, i =>
+            {
+                Parallel.For(0, width, j =>
+                {
+                    var colorPixel = GetPx(width, height, buffer, i, j);
+                    byte gray = (byte)((colorPixel.R + colorPixel.G + colorPixel.B) / 3);
+                    byte luma = (byte)(0.299 * colorPixel.R + 0.587 * colorPixel.G + 0.114 * colorPixel.B);
+                    gray = (byte)(luma > treshold ? 255 : 0);
+                    colorPixel = Color.FromArgb(gray, gray, gray);
+                    SetPx(width, height, buffer, i, j, colorPixel);
+                });
+            });
+        }
+
 
     }
 }
