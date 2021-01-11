@@ -9,6 +9,24 @@ namespace TeamProjectMPI
 {
     class Program
     {
+
+        static int[,] AccumulateAccumulators(List<int[,]> HSResults, int len1, int len2)
+        {
+            var result = new int[len1, len2];
+
+            for(int i=0;i<len1;i++)
+            {
+                for(int j=0;j<len2;j++)
+                {
+                    foreach (var hs in HSResults)
+                        result[i,j] += hs[i,j];
+                }
+            }
+
+            return result;
+        }
+
+
         static List<KeyValuePair<String, int[]>> pictures = new List<KeyValuePair<string, int[]>>()
         {
             new KeyValuePair<string, int[]>("E:\\algoritzm\\pentagon.png", new int[2]{ 100, 50}),
@@ -29,15 +47,12 @@ namespace TeamProjectMPI
             PhotoHelper.ConvertImageToGreyScaleAndTresholding(width, height, pictures[pic-1].Value[0], buffer);
 
 
-
+            Console.WriteLine("starting HS");
             int distMax = (int)Math.Round(Math.Sqrt(height * height + width * width));
             double[] theta = new double[180];
             int[] rho = new int[distMax * 2 + 1];
-            PhotoHelper.H = new int[rho.Length][];
-            for (int i = 0; i < rho.Length; i++)
-            {
-                PhotoHelper.H[i] = new int[theta.Length];
-            }
+            int[,]H = new int[rho.Length, theta.Length];
+           
             int idx = 0;
             for (int i = 0; i < 180; i++)
             { theta[idx] = (Math.PI) / 180 * i; idx++; }
@@ -47,6 +62,7 @@ namespace TeamProjectMPI
                 rho[idx] = i;
                 idx++;
             }
+            Console.WriteLine("got here 1");
             for (int i = 1; i < Communicator.world.Size; i++)
             {
                 Communicator.world.Send<double[]>(theta, i, 0);
@@ -55,9 +71,21 @@ namespace TeamProjectMPI
                 Communicator.world.Send<int>(width, i, 0);
                 Communicator.world.Send<int>(height, i, 0);
             }
-            PhotoHelper.HSIncrementation(width, height, buffer, 0, Communicator.world.Size, theta, rho);
+
+            List<int[,]> hsMatrices = new List<int[,]>();
+            Console.WriteLine("got here 2");
+
+
+            hsMatrices.Add(PhotoHelper.HSIncrementation(width, height, buffer, 0, Communicator.world.Size, theta, rho));
+            for(int i=1;i<Communicator.world.Size;i++)
+            {
+                hsMatrices.Add(Communicator.world.Receive<int[,]>(i, 0));
+            }
+            Console.WriteLine("accumulating matrices....");
+            Console.WriteLine(hsMatrices.Count);
+            H = AccumulateAccumulators(hsMatrices, rho.Length, theta.Length);
             Console.WriteLine("Done Hough Transform");
-            var lines = PhotoHelper.CreateLinesFromHoughSpace(PhotoHelper.H,theta, rho,  pictures[pic-1].Value[1]);
+            var lines = PhotoHelper.CreateLinesFromHoughSpace(H,theta, rho,  pictures[pic-1].Value[1]);
             Console.WriteLine(lines.Count);
             Console.WriteLine("Created Lines from HS");
             PhotoHelper.AddLinesToPhoto(lines, width, height, buffer);
@@ -74,7 +102,9 @@ namespace TeamProjectMPI
             var width = Communicator.world.Receive<int>(0, 0);
             var height = Communicator.world.Receive<int>(0, 0);
 
-            PhotoHelper.HSIncrementation(width, height, buffer, 0, Communicator.world.Size, theta, rho);
+            var res = PhotoHelper.HSIncrementation(width, height, buffer, Communicator.world.Rank, Communicator.world.Size, theta, rho);
+            Console.WriteLine("process {0} came back from hs incr", Communicator.world.Rank);
+            Communicator.world.Send(res, 0, 0);
 
 
         }

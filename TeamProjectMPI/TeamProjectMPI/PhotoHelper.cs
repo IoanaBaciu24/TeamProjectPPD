@@ -12,7 +12,7 @@ namespace TeamProjectMPI
 {
     class PhotoHelper
     {
-        public static int[][] H;
+        //public static int[][] H;
 
         public static void ImRead(string path, out int width, out int height, out byte[] buffer)
         {
@@ -64,14 +64,14 @@ namespace TeamProjectMPI
         }
 
 
-        public static List<Line> CreateLinesFromHoughSpace(int[][] H, double[]theta, int[]rho, int treshold)
+        public static List<Line> CreateLinesFromHoughSpace(int[,] H, double[]theta, int[]rho, int treshold)
         {
             List<Line> result = new List<Line>();
             Parallel.For(0, rho.Length, i =>
             {
                 for (int j = 0; j < theta.Length; j++)
                 {
-                    if (H[i][j] >= treshold)
+                    if (H[i,j] >= treshold)
                     {
                         var a = Math.Cos(theta[j]);
                         var b = Math.Sin(theta[j]);
@@ -127,12 +127,12 @@ namespace TeamProjectMPI
 
 
 
-        public static void HSIncrementation(int width, int height, byte[] buffer, int index, int nrProcesses, double[]theta, int[]rho)
+        public static int[,] HSIncrementation(int width, int height, byte[] buffer, int index, int nrProcesses, double[]theta, int[]rho)
         {
-           
+
 
             //Quadruple quadruple = (Quadruple)param[3];
-            //int[,] HS = (int[,])param[4];
+            int[,] H = new int[rho.Length, theta.Length];
             Console.WriteLine("got here");
             var count = 0;
 
@@ -170,7 +170,7 @@ namespace TeamProjectMPI
 
                                 if(H!=null)
                                 {
-                                    Interlocked.Increment(ref H[rh][iTheta]);
+                                    Interlocked.Increment(ref H[rh, iTheta]);
 
                                 }
                             }
@@ -178,6 +178,8 @@ namespace TeamProjectMPI
                     }
                 }
             }
+
+            return H;
         }
 
 
