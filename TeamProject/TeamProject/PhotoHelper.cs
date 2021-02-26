@@ -73,6 +73,7 @@ namespace TeamProject
             {
             Parallel.For(0, width, j =>
               {
+                  // numai un parallel for!!
                   var colorPixel = GetPx(width, height, buffer, i, j);
                   byte gray = (byte)((colorPixel.R + colorPixel.G + colorPixel.B) / 3);
                   byte luma = (byte)(0.299 * colorPixel.R + 0.587 * colorPixel.G + 0.114 * colorPixel.B);
@@ -252,7 +253,6 @@ namespace TeamProject
                 index = i;
                 ThreadPool.QueueUserWorkItem(arg =>
                 {
-                    //jmekeria aia cu indexul nu merge si trebuie cu new int cred
 
                     List<Object> thrParameter = new List<Object>();
                     thrParameter.Add(buffer);
